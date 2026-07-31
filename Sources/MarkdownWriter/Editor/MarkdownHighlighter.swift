@@ -357,7 +357,10 @@ enum MarkdownHighlighter {
                 NSRange(location: match.range(at: 1).location,
                         length: match.range(at: 1).length + match.range(at: 2).length)
             )
-            storage.addAttributes([.foregroundColor: Palette.marker, .font: typography.body], range: prefix)
+            // The prefix keeps the heading's own font even though it's hidden:
+            // the caret takes its height from the character it sits on, and a
+            // body-sized caret at the start of an H1 looks broken.
+            storage.addAttribute(.foregroundColor, value: Palette.marker, range: prefix)
             conceal(prefix)
             styleInline(storage, in: absolute(match.range(at: 3)), reveal: line.content,
                         typography: typography, result: &result)
@@ -398,7 +401,7 @@ enum MarkdownHighlighter {
                 location: line.content.location,
                 length: NSMaxRange(match.range(at: 3))
             )
-            storage.addAttributes([.foregroundColor: Palette.marker, .font: typography.code], range: prefix)
+            storage.addAttribute(.foregroundColor, value: Palette.marker, range: prefix)
             conceal(prefix)
             result.decorations.append(
                 BlockDecoration(kind: .checkbox(indent: indent, checked: checked), range: line.enclosing)

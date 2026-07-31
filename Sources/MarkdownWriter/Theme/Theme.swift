@@ -40,14 +40,91 @@ enum Palette {
     static let selection = dynamic(light: hex(0xE9E2D4), dark: hex(0x36343A))
 }
 
+/// The body typefaces on offer. All of them ship with macOS, and each falls
+/// back to the matching system design if the family is ever missing.
+enum EditorFont: String, CaseIterable, Identifiable {
+    case newYork
+    case system
+    case avenir
+    case iowan
+    case mono
+
+    var id: String { rawValue }
+
+    var label: String {
+        switch self {
+        case .newYork: return "New York"
+        case .system: return "San Francisco"
+        case .avenir: return "Avenir Next"
+        case .iowan: return "Iowan Old Style"
+        case .mono: return "SF Mono"
+        }
+    }
+
+    var note: String {
+        switch self {
+        case .newYork: return "Apple's serif — warm, bookish"
+        case .system: return "The system sans — neutral, very legible"
+        case .avenir: return "Humanist sans — geometric, airy"
+        case .iowan: return "Book serif — sturdier than New York"
+        case .mono: return "Monospaced, iA Writer style"
+        }
+    }
+
+    /// `nil` means "use the system face for `design`".
+    fileprivate var familyName: String? {
+        switch self {
+        case .newYork, .system: return nil
+        case .avenir: return "Avenir Next"
+        case .iowan: return "Iowan Old Style"
+        case .mono: return nil
+        }
+    }
+
+    fileprivate var design: NSFontDescriptor.SystemDesign {
+        switch self {
+        case .newYork, .iowan: return .serif
+        case .system, .avenir: return .default
+        case .mono: return .monospaced
+        }
+    }
+
+    /// Sans faces need a touch more leading than serifs at the same size to
+    /// read comfortably; mono needs the most.
+    fileprivate var lineHeightMultiple: CGFloat {
+        switch self {
+        case .newYork, .iowan: return 1.50
+        case .system, .avenir: return 1.55
+        case .mono: return 1.62
+        }
+    }
+
+    /// Measure is a count of characters, not a width. Wider faces need a wider
+    /// column to land on the same ~68 characters.
+    fileprivate var measureScale: CGFloat {
+        switch self {
+        case .newYork, .iowan: return 1.0
+        case .system: return 1.04
+        case .avenir: return 1.08
+        case .mono: return 1.22
+        }
+    }
+}
+
 /// Typography derived from a single base size, so ⌘+/⌘- scales the whole
 /// hierarchy proportionally.
-struct Typography {
+struct Typography: Equatable {
     let base: CGFloat
+    var family: EditorFont = .newYork
 
-    private static func serif(size: CGFloat, weight: NSFont.Weight = .regular) -> NSFont {
+    private func resolve(size: CGFloat, weight: NSFont.Weight) -> NSFont {
+        if let name = family.familyName,
+           let named = NSFont(name: name, size: size) {
+            guard weight >= .semibold else { return named }
+            return NSFontManager.shared.convert(named, toHaveTrait: .boldFontMask)
+        }
         let system = NSFont.systemFont(ofSize: size, weight: weight)
-        guard let descriptor = system.fontDescriptor.withDesign(.serif),
+        guard let descriptor = system.fontDescriptor.withDesign(family.design),
               let font = NSFont(descriptor: descriptor, size: size)
         else { return system }
         return font
@@ -57,7 +134,8 @@ struct Typography {
         NSFont.monospacedSystemFont(ofSize: size, weight: .regular)
     }
 
-    var body: NSFont { Self.serif(size: base) }
+    var body: NSFont { resolve(size: base, weight: .regular) }
+    /// Code is always monospaced, whatever the prose face.
     var code: NSFont { Self.mono(size: base * 0.88) }
 
     /// Level 1...6.
@@ -70,14 +148,14 @@ struct Typography {
         case 4: scale = 1.10
         default: scale = 1.0
         }
-        return Self.serif(size: (base * scale).rounded(), weight: level <= 2 ? .bold : .semibold)
+        return resolve(size: (base * scale).rounded(), weight: level <= 2 ? .bold : .semibold)
     }
 
-    var lineHeightMultiple: CGFloat { 1.5 }
+    var lineHeightMultiple: CGFloat { family.lineHeightMultiple }
     var paragraphSpacing: CGFloat { base * 0.62 }
 
     /// Roughly 68 characters at the current size — the comfortable measure that
     /// Bear, iA Writer and Medium all land near.
-    var maxMeasure: CGFloat { (base * 34).rounded() }
+    var maxMeasure: CGFloat { (base * 34 * family.measureScale).rounded() }
     var verticalPadding: CGFloat { 96 }
 }

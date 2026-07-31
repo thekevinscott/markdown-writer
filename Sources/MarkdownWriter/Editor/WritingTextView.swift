@@ -63,6 +63,38 @@ final class WritingTextView: NSTextView {
     ) {
         super.setSelectedRanges(ranges, affinity: affinity, stillSelecting: stillSelecting)
         refreshConcealment()
+        syncTypingAttributes()
+    }
+
+    /// The caret is drawn at the height of `typingAttributes`, and the next
+    /// character inherits them. Forcing them to the body font makes the caret
+    /// shrink on a heading and the typed character jump when the highlighter
+    /// catches up — so instead they're taken from the text at the caret.
+    func syncTypingAttributes() {
+        guard let textStorage, textStorage.length > 0 else {
+            typingAttributes = [
+                .font: typography.body,
+                .foregroundColor: Palette.text
+            ]
+            return
+        }
+
+        let string = textStorage.string as NSString
+        let caret = min(max(selectedRange().location, 0), textStorage.length)
+
+        // Prefer the character to the left — that's what you're continuing.
+        // At the start of a line there is nothing to continue, so look right.
+        var index = min(caret, textStorage.length - 1)
+        if caret > 0, string.character(at: caret - 1) != 0x0A {
+            index = caret - 1
+        }
+
+        var attributes = textStorage.attributes(at: index, effectiveRange: nil)
+        // Span decorations shouldn't leak into whatever gets typed next.
+        attributes.removeValue(forKey: .strikethroughStyle)
+        attributes.removeValue(forKey: .underlineStyle)
+        attributes.removeValue(forKey: .underlineColor)
+        typingAttributes = attributes
     }
 
     /// Recomputes which characters are hidden and invalidates only what moved.

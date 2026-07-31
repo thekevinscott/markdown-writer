@@ -58,6 +58,18 @@ struct EditorCommands: Commands {
                 }
             }
             Divider()
+            // Numbered shortcuts so you can flip between faces quickly and
+            // judge them against the same paragraph.
+            Menu("Typeface") {
+                ForEach(Array(EditorFont.allCases.enumerated()), id: \.element.id) { index, font in
+                    Button(font.label) { preferences.fontFamily = font }
+                        .keyboardShortcut(
+                            KeyEquivalent(Character("\(index + 1)")),
+                            modifiers: [.command, .option]
+                        )
+                }
+            }
+            Divider()
             Button("Bigger Text") { preferences.nudgeFontSize(by: 1) }
                 .keyboardShortcut("+", modifiers: .command)
             Button("Smaller Text") { preferences.nudgeFontSize(by: -1) }

@@ -15,7 +15,7 @@ struct EditorView: View {
             Color(nsColor: Palette.background)
                 .ignoresSafeArea()
 
-            MarkdownEditor(text: $document.text, fontSize: preferences.fontSize)
+            MarkdownEditor(text: $document.text, typography: preferences.typography)
                 .ignoresSafeArea()
 
             statusBar
@@ -43,6 +43,8 @@ struct EditorView: View {
                 Text(statistics)
                     .monospacedDigit()
 
+                FontPicker(family: $preferences.fontFamily)
+
                 AppearanceToggle(mode: $preferences.appearance)
             }
             .font(.system(size: 11, weight: .medium))
@@ -63,6 +65,34 @@ struct EditorView: View {
             .count
         let characters = document.text.count
         return "\(words) words · \(characters) characters"
+    }
+}
+
+/// Typeface menu, in the status bar so you can compare faces against the text
+/// you're actually looking at.
+struct FontPicker: View {
+    @Binding var family: EditorFont
+
+    var body: some View {
+        Menu {
+            // An inline Picker gets native checkmarks for free.
+            Picker("Typeface", selection: $family) {
+                ForEach(EditorFont.allCases) { option in
+                    Text(option.label).tag(option)
+                }
+            }
+            .pickerStyle(.inline)
+        } label: {
+            HStack(spacing: 4) {
+                Text(family.label)
+                Image(systemName: "chevron.up.chevron.down")
+                    .font(.system(size: 8, weight: .bold))
+            }
+        }
+        .menuStyle(.borderlessButton)
+        .menuIndicator(.hidden)
+        .fixedSize()
+        .help(family.note)
     }
 }
 

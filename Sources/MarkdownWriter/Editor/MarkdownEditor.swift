@@ -5,7 +5,7 @@ import SwiftUI
 /// lives in `MarkdownHighlighter`, all the layout in `WritingTextView`.
 struct MarkdownEditor: NSViewRepresentable {
     @Binding var text: String
-    var fontSize: CGFloat
+    var typography: Typography
 
     func makeCoordinator() -> Coordinator {
         Coordinator(text: $text)
@@ -26,7 +26,7 @@ struct MarkdownEditor: NSViewRepresentable {
         // The text view is its own layout manager delegate: that is the hook
         // that suppresses glyphs for concealed syntax.
         layoutManager.delegate = textView
-        textView.typography = Typography(base: fontSize)
+        textView.typography = typography
         textView.isEditable = true
         textView.isRichText = false
         textView.allowsUndo = true
@@ -96,8 +96,8 @@ struct MarkdownEditor: NSViewRepresentable {
             context.coordinator.rehighlight(textView)
         }
 
-        if textView.typography.base != fontSize {
-            textView.typography = Typography(base: fontSize)
+        if textView.typography != typography {
+            textView.typography = typography
             context.coordinator.rehighlight(textView)
         }
     }
@@ -148,10 +148,7 @@ struct MarkdownEditor: NSViewRepresentable {
             let result = MarkdownHighlighter.apply(to: storage, typography: textView.typography)
             textView.decorations = result.decorations
             textView.conceals = result.conceals
-            textView.typingAttributes = [
-                .font: textView.typography.body,
-                .foregroundColor: Palette.text
-            ]
+            textView.syncTypingAttributes()
         }
     }
 }

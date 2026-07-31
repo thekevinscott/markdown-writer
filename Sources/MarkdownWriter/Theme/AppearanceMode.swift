@@ -44,6 +44,7 @@ final class Preferences: ObservableObject {
     private enum Key {
         static let appearance = "appearanceMode"
         static let fontSize = "editorFontSize"
+        static let fontFamily = "editorFontFamily"
     }
 
     static let minFontSize: CGFloat = 13
@@ -63,12 +64,26 @@ final class Preferences: ObservableObject {
         }
     }
 
+    @Published var fontFamily: EditorFont {
+        didSet {
+            UserDefaults.standard.set(fontFamily.rawValue, forKey: Key.fontFamily)
+        }
+    }
+
+    /// Everything the editor needs to lay text out, in one comparable value.
+    var typography: Typography {
+        Typography(base: fontSize, family: fontFamily)
+    }
+
     private init() {
         let stored = UserDefaults.standard.string(forKey: Key.appearance)
         appearance = stored.flatMap(AppearanceMode.init(rawValue:)) ?? .system
 
         let size = UserDefaults.standard.double(forKey: Key.fontSize)
         fontSize = size > 0 ? CGFloat(size) : Preferences.defaultFontSize
+
+        let family = UserDefaults.standard.string(forKey: Key.fontFamily)
+        fontFamily = family.flatMap(EditorFont.init(rawValue:)) ?? .newYork
     }
 
     func applyAppearance() {

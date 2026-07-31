@@ -45,9 +45,16 @@ Hidden titlebar; the traffic lights float over the page. A status bar with the
 filename, word count and the appearance switch fades in when the pointer reaches
 the bottom edge, and it never intercepts clicks meant for the text.
 
-**Serif body, warm neutrals.** New York for prose, SF Mono for code. Backgrounds
-are warm off-white and near-black rather than `#FFF`/`#000` — pure white is harsh
-over long sessions and pure black crushes antialiasing.
+**Five typefaces, all bundled with macOS.** New York (default), San Francisco,
+Avenir Next, Iowan Old Style, SF Mono. Switch in the status bar or with ⌘⌥1–5,
+so you can judge a face against the paragraph you're actually reading. Each
+carries its own leading and column width — sans faces need more leading than
+serifs at the same size, and a wider face needs a wider column to land on the
+same ~68 characters. Code is always monospaced regardless.
+
+**Warm neutrals.** Backgrounds are warm off-white and near-black rather than
+`#FFF`/`#000` — pure white is harsh over long sessions and pure black crushes
+antialiasing.
 
 **Three-way appearance.** Auto / Light / Dark, in the status bar and under View →
 Appearance. Auto follows the system. Colors are dynamic `NSColor`s, so switching
@@ -67,6 +74,7 @@ never end up in one window.
 | ⌘K | link — caret lands in the URL slot |
 | ⇧⌘K | inline code |
 | ⇧⌘X | strikethrough |
+| ⌘⌥1…5 | typeface |
 | ⌘+ / ⌘- / ⌘0 | text size |
 | ⌘F | find bar |
 
