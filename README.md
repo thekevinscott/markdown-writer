@@ -45,7 +45,7 @@ Hidden titlebar; the traffic lights float over the page. A status bar with the
 filename, word count and the appearance switch fades in when the pointer reaches
 the bottom edge, and it never intercepts clicks meant for the text.
 
-**Five typefaces, all bundled with macOS.** New York (default), San Francisco,
+**Five typefaces, all bundled with macOS.** San Francisco (default), New York,
 Avenir Next, Iowan Old Style, SF Mono. Switch in the status bar or with ⌘⌥1–5,
 so you can judge a face against the paragraph you're actually reading. Each
 carries its own leading and column width — sans faces need more leading than

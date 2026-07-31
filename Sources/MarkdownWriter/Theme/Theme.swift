@@ -42,9 +42,10 @@ enum Palette {
 
 /// The body typefaces on offer. All of them ship with macOS, and each falls
 /// back to the matching system design if the family is ever missing.
+/// Order is the menu order, and drives the ⌘⌥1–5 shortcuts. Default first.
 enum EditorFont: String, CaseIterable, Identifiable {
-    case newYork
     case system
+    case newYork
     case avenir
     case iowan
     case mono
@@ -115,7 +116,7 @@ enum EditorFont: String, CaseIterable, Identifiable {
 /// hierarchy proportionally.
 struct Typography: Equatable {
     let base: CGFloat
-    var family: EditorFont = .newYork
+    var family: EditorFont = .system
 
     private func resolve(size: CGFloat, weight: NSFont.Weight) -> NSFont {
         if let name = family.familyName,

@@ -83,7 +83,7 @@ final class Preferences: ObservableObject {
         fontSize = size > 0 ? CGFloat(size) : Preferences.defaultFontSize
 
         let family = UserDefaults.standard.string(forKey: Key.fontFamily)
-        fontFamily = family.flatMap(EditorFont.init(rawValue:)) ?? .newYork
+        fontFamily = family.flatMap(EditorFont.init(rawValue:)) ?? .system
     }
 
     func applyAppearance() {
