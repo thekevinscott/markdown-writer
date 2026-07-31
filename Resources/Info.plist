@@ -8,6 +8,8 @@
     <string>Markdown Writer</string>
     <key>CFBundleExecutable</key>
     <string>MarkdownWriter</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
     <key>CFBundleIdentifier</key>
     <string>com.thekevinscott.MarkdownWriter</string>
     <key>CFBundlePackageType</key>
