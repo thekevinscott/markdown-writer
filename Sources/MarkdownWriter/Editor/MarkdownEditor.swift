@@ -18,7 +18,7 @@ struct MarkdownEditor: NSViewRepresentable {
         let layoutManager = NSLayoutManager()
         storage.addLayoutManager(layoutManager)
 
-        let container = NSTextContainer(size: NSSize(width: 0, height: .greatestFiniteMagnitude))
+        let container = NSTextContainer(size: NSSize(width: 0, height: CGFloat.greatestFiniteMagnitude))
         container.widthTracksTextView = true
         layoutManager.addTextContainer(container)
 
@@ -34,7 +34,7 @@ struct MarkdownEditor: NSViewRepresentable {
         textView.isHorizontallyResizable = false
         textView.autoresizingMask = [.width]
         textView.minSize = NSSize(width: 0, height: 0)
-        textView.maxSize = NSSize(width: .greatestFiniteMagnitude, height: .greatestFiniteMagnitude)
+        textView.maxSize = NSSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
         textView.backgroundColor = Palette.background
         textView.drawsBackground = true
         textView.insertionPointColor = Palette.insertionPoint
@@ -122,7 +122,7 @@ struct MarkdownEditor: NSViewRepresentable {
 
         func textStorage(
             _ textStorage: NSTextStorage,
-            didProcessEditing editedMask: NSTextStorage.EditActions,
+            didProcessEditing editedMask: NSTextStorageEditActions,
             range editedRange: NSRange,
             changeInLength delta: Int
         ) {

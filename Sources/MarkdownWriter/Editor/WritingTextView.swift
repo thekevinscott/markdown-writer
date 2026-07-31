@@ -26,8 +26,9 @@ final class WritingTextView: NSTextView {
     /// highlighter — dynamic colors redraw themselves, but decorations don't.
     var onAppearanceChange: (() -> Void)?
 
-    /// Character indexes currently generating no glyphs.
-    private var hidden = IndexSet()
+    /// Character indexes currently generating no glyphs. (Named to avoid
+    /// colliding with NSView's ObjC `hidden` property.)
+    private var concealedIndexes = IndexSet()
     private var isRefreshing = false
 
     // MARK: - Measure
@@ -117,12 +118,12 @@ final class WritingTextView: NSTextView {
             }
         }
 
-        guard force || next != hidden else { return }
+        guard force || next != concealedIndexes else { return }
 
         let moved = force
             ? IndexSet(integersIn: 0..<max(length, 1))
-            : next.symmetricDifference(hidden)
-        hidden = next
+            : next.symmetricDifference(concealedIndexes)
+        concealedIndexes = next
 
         for range in moved.rangeView {
             let characters = NSRange(
@@ -303,11 +304,11 @@ extension WritingTextView: NSLayoutManagerDelegate {
         font: NSFont,
         forGlyphRange glyphRange: NSRange
     ) -> Int {
-        guard !hidden.isEmpty, glyphRange.length > 0 else { return 0 }
+        guard !concealedIndexes.isEmpty, glyphRange.length > 0 else { return 0 }
 
         var updated = Array(UnsafeBufferPointer(start: properties, count: glyphRange.length))
         var changed = false
-        for offset in 0..<glyphRange.length where hidden.contains(characterIndexes[offset]) {
+        for offset in 0..<glyphRange.length where concealedIndexes.contains(characterIndexes[offset]) {
             updated[offset].insert(.null)
             changed = true
         }
