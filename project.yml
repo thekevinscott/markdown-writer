@@ -1,0 +1,29 @@
+# XcodeGen spec, for working in Xcode instead of SwiftPM.
+#   brew install xcodegen && xcodegen generate && open MarkdownWriter.xcodeproj
+name: MarkdownWriter
+options:
+  bundleIdPrefix: com.thekevinscott
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+
+targets:
+  MarkdownWriter:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources/MarkdownWriter
+    info:
+      path: Resources/Info.plist
+    settings:
+      base:
+        PRODUCT_NAME: MarkdownWriter
+        PRODUCT_BUNDLE_IDENTIFIER: com.thekevinscott.MarkdownWriter
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        SWIFT_VERSION: "5.9"
+        ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_STYLE: Automatic
+        COMBINE_HIDPI_IMAGES: YES
+        INFOPLIST_FILE: Resources/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
