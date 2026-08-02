@@ -1,6 +1,6 @@
 # XcodeGen spec, for working in Xcode instead of SwiftPM.
-#   brew install xcodegen && xcodegen generate && open MarkdownWriter.xcodeproj
-name: MarkdownWriter
+#   brew install xcodegen && xcodegen generate && open MarkoDarko.xcodeproj
+name: MarkoDarko
 options:
   bundleIdPrefix: com.thekevinscott
   deploymentTarget:
@@ -8,17 +8,17 @@ options:
   createIntermediateGroups: true
 
 targets:
-  MarkdownWriter:
+  MarkoDarko:
     type: application
     platform: macOS
     sources:
-      - path: Sources/MarkdownWriter
+      - path: Sources/MarkoDarko
     info:
       path: Resources/Info.plist
     settings:
       base:
-        PRODUCT_NAME: MarkdownWriter
-        PRODUCT_BUNDLE_IDENTIFIER: com.thekevinscott.MarkdownWriter
+        PRODUCT_NAME: MarkoDarko
+        PRODUCT_BUNDLE_IDENTIFIER: com.thekevinscott.MarkoDarko
         MARKETING_VERSION: "0.1.0"
         CURRENT_PROJECT_VERSION: "1"
         SWIFT_VERSION: "5.9"

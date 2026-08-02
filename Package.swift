@@ -2,12 +2,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "MarkdownWriter",
+    name: "MarkoDarko",
     platforms: [.macOS(.v14)],
     targets: [
         .executableTarget(
-            name: "MarkdownWriter",
-            path: "Sources/MarkdownWriter"
+            name: "MarkoDarko",
+            path: "Sources/MarkoDarko"
         )
     ]
 )

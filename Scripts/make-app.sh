@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
-# Builds MarkdownWriter.app from the SwiftPM executable.
+# Builds MarkoDarko.app from the SwiftPM executable.
 # SwiftPM can't emit an app bundle, so we assemble one around the binary.
 set -euo pipefail
 
 CONFIG="${1:-release}"
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-APP="$ROOT/build/MarkdownWriter.app"
+APP="$ROOT/build/MarkoDarko.app"
 
 swift build -c "$CONFIG" --package-path "$ROOT"
-BIN="$(swift build -c "$CONFIG" --package-path "$ROOT" --show-bin-path)/MarkdownWriter"
+BIN="$(swift build -c "$CONFIG" --package-path "$ROOT" --show-bin-path)/MarkoDarko"
 
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
-cp "$BIN" "$APP/Contents/MacOS/MarkdownWriter"
+cp "$BIN" "$APP/Contents/MacOS/MarkoDarko"
 cp "$ROOT/Resources/Info.plist" "$APP/Contents/Info.plist"
 cp "$ROOT/Resources/AppIcon.icns" "$APP/Contents/Resources/AppIcon.icns"
 

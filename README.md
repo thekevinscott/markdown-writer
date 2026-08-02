@@ -1,14 +1,17 @@
-# Markdown Writer
+# MarkoDarko
 
 A native macOS editor for writing Markdown. One file, one window, nothing else.
+
+Named in the tradition of MacDown, only stupider. Never shortened to "Marko" —
+that's a different Markdown editor.
 
 ## Build
 
 Requires macOS 14+ and Xcode 15+.
 
 ```sh
-./Scripts/make-app.sh          # → build/MarkdownWriter.app
-open build/MarkdownWriter.app
+./Scripts/make-app.sh          # → build/MarkoDarko.app
+open build/MarkoDarko.app
 ```
 
 Or work in Xcode:
@@ -16,7 +19,7 @@ Or work in Xcode:
 ```sh
 brew install xcodegen
 xcodegen generate
-open MarkdownWriter.xcodeproj
+open MarkoDarko.xcodeproj
 ```
 
 The SwiftPM target alone (`swift build`) produces a bare executable. macOS needs a

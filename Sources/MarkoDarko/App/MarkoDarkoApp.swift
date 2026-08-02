@@ -2,7 +2,7 @@ import AppKit
 import SwiftUI
 
 @main
-struct MarkdownWriterApp: App {
+struct MarkoDarkoApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @ObservedObject private var preferences = Preferences.shared
 

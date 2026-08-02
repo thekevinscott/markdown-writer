@@ -3,15 +3,15 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>Markdown Writer</string>
+    <string>MarkoDarko</string>
     <key>CFBundleDisplayName</key>
-    <string>Markdown Writer</string>
+    <string>MarkoDarko</string>
     <key>CFBundleExecutable</key>
-    <string>MarkdownWriter</string>
+    <string>MarkoDarko</string>
     <key>CFBundleIconFile</key>
     <string>AppIcon</string>
     <key>CFBundleIdentifier</key>
-    <string>com.thekevinscott.MarkdownWriter</string>
+    <string>com.thekevinscott.MarkoDarko</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
